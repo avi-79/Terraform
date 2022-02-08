@@ -1,100 +1,29 @@
-provider "aws"{
-
- region = "${var.region}"
-
-
- }
-
-resource "aws_instance" "ec2_pro" {
-
- availability_zone = "${var.availability_zones}"
-
- ami ="${var.ami}"
-
- instance_type = "${var.instance_type}"
-
- key_name = "new"
-
- count = "${var.instance_count}"
-
- tags = {
-
- Name = "Production server"
-
- Name = "Terraform-${count.index + 1}"
-
- }
-
-  security_groups= ["${aws_security_group.launch-wizard-7.name}"] 
-
- }
+variable "region" {
+description = "Region where the ec2 instance is created"
+}
 
 
 
- resource "aws_security_group" "launch-wizard-7" {
-
- name="launch-wizard-7"
-
-
- ingress {
-
- from_port = 22
-
- to_port = 22
-
- protocol = "tcp"
-
- cidr_blocks = ["0.0.0.0/0"]
-
- }
-
- ingress {
-
- from_port = 8080
-
- to_port = 8080
-
- protocol = "tcp"
-
- cidr_blocks = ["0.0.0.0/0"]
-
- }
-
- egress {
-
- from_port = 0
-
- to_port = 0
-
- protocol = "-1"
-
- cidr_blocks = ["0.0.0.0/0"]
+variable "availability_zones" {
+description = "Availability zones for the region where instances is created"
+}
 
 
- }
 
- }
-
-
-# resource "aws_ebs_volume" "volume1" {
-
-# availability_zone = "us-east-2b"
-
-# size = 1
-
-# encrypted = true
+variable "ami" {
+description = "ami id for the instance creating"
+}
 
 
-# }
 
-# resource "aws_volume_attachment" "ebsattchment" {
+variable "instance_type"{
+description = "instance type"
+type = string
+}
 
-# device_name = "/dev/sdh"
 
-# volume_id = "${aws_ebs_volume.volume1.id}"
 
-# instance_id = "${aws_instance.ec2_pro.id}"
+variable "instance_count" {
+default = "1"
+}
 
- 
-
-# }
